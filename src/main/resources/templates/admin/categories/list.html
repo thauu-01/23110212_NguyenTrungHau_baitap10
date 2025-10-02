@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Category List</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Category List</h1>
+        <a th:href="@{/admin/categories/add}">Add New</a>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Icon</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.categoryId}"></td>
+                <td th:text="${category.categoryName}"></td>
+                <td><img th:src="@{/uploads/{icon}(icon=${category.icon})}" width="50" /></td>
+                <td>
+                    <a th:href="@{/admin/categories/edit/{id}(id=${category.categoryId})}">Edit</a>
+                    <a th:href="@{/admin/categories/delete/{id}(id=${category.categoryId})}">Delete</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

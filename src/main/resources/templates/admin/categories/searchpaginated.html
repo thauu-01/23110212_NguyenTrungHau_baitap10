@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Search Categories</title>
+    <style>
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            padding: 0;
+        }
+        .pagination li a {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            text-decoration: none;
+            color: #333;
+        }
+        .pagination li a.active {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .alert {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border: 1px solid #c3e6cb;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Search Categories</h1>
+
+    <!-- Hiển thị thông báo thành công -->
+    <div th:if="${message}" class="alert" th:text="${message}"></div>
+
+    <!-- Form tìm kiếm -->
+    <form th:action="@{/admin/categories/searchpaginated}" method="get">
+        <input type="text" name="name" placeholder="Search by name" th:value="${name}" />
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Bảng hiển thị danh sách categories -->
+    <table border="1" cellpadding="5" cellspacing="0" style="margin-top: 10px; width: 100%;">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Icon</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories.content}">
+            <td th:text="${category.categoryId}"></td>
+            <td th:text="${category.categoryName}"></td>
+            <td>
+                <img th:if="${category.icon}" th:src="@{/uploads/{icon}(icon=${category.icon})}" width="50" alt="Category Icon"/>
+                <span th:if="${category.icon == null}">No Image</span>
+            </td>
+            <td>
+                <a th:href="@{/admin/categories/edit/{id}(id=${category.categoryId})}">Edit</a> |
+                <a th:href="@{/admin/categories/delete/{id}(id=${category.categoryId})}"
+                   onclick="return confirm('Are you sure you want to delete this category?');">Delete</a>
+            </td>
+        </tr>
+        <tr th:if="${categories.totalElements == 0}">
+            <td colspan="4" style="text-align: center;">No categories found</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <ul class="pagination" th:if="${categories.totalPages > 1}">
+        <li th:each="pageNumber : ${#numbers.sequence(1, categories.totalPages)}">
+            <a th:href="@{/admin/categories/searchpaginated(page=${pageNumber}, size=${size}, name=${name})}"
+               th:text="${pageNumber}"
+               th:classappend="${pageNumber == currentPage} ? 'active'">
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

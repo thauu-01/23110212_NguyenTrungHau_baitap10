@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Layout</title>
+</head>
+<body>
+    <header>
+        <img th:src="@{/images/23110212_NguyenTrungHau.png}" alt="Header Image" width="200" />
+    </header>
+    <div layout:fragment="content">
+        <!-- Content -->
+    </div>
+    <footer>
+        <p>Thực hiện bởi: 23110212_NguyenTrungHau</p>
+    </footer>
+</body>
+</html>
